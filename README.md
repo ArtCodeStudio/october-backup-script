@@ -9,6 +9,12 @@ yarn set version berry
 yarn install
 ```
 
+To create a backup of current database, storage and plugins:
 ```bash
-yarn run backup:create
+yarn backup:create
+```
+
+WIP (not yet functional): To restore a stored backup (multiple-choice prompt):
+```bash
+yarn backup:restore
 ```
