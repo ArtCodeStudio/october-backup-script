@@ -1,26 +1,31 @@
 import { getOctoberCmsConfig } from './get-config';
-import { dump } from './database';
-import { storage } from './storage';
-import { plugins } from './plugins';
-import { mkdirSync } from 'fs';
+import { backupDatabase } from './database';
+import { backupStorage } from './storage';
+import { backupPlugins } from './plugins';
+import { mkdirSync, writeFileSync } from 'fs';
 
 const backup = async () => {
     const date = new Date().toISOString();
     const config = await getOctoberCmsConfig();
 
-    mkdirSync('../public/backups', { recursive: true });
+    mkdirSync(`../public/backups/${date}`, { recursive: true });
 
     console.log('\nDump database..');
-    await dump(config.database, `../public/backups/mysql_${date}.sql`);
+    await backupDatabase(config.database, `../public/backups/${date}/mysql.sql`);
     console.log('Dump database done.');
 
     console.log('\nZip storage..');
-    await storage(`../public/backups/storage_${date}.zip`);
+    await backupStorage(`../public/backups/${date}/storage.zip`);
     console.log('Zip storage done.');
 
     console.log('\nZip plugins..');
-    await plugins(`../public/backups/plugins_${date}.zip`);
+    await backupPlugins(`../public/backups/${date}/plugins.zip`);
     console.log('Zip plugins done.');
+
+    // mark the fresh backup as the current one
+    writeFileSync(`../public/backups/.current.database`, date);
+    writeFileSync(`../public/backups/.current.storage`, date);
+    writeFileSync(`../public/backups/.current.plugins`, date);
 };
 
 try {

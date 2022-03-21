@@ -1,5 +1,9 @@
 import { zip } from './zip';
 
-export const plugins = (zipToFile: string) => {
+export const backupPlugins = (zipToFile: string) => {
     return zip('plugins', zipToFile);
 };
+
+export const restorePlugins = (date: string) => {
+  // TODO
+}

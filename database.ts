@@ -1,7 +1,7 @@
 import mysqldump from 'mysqldump';
 import type { OctoberCMSConfig } from './get-config';
 
-export const dump = (config: OctoberCMSConfig['database'], dumpToFile: string) => {
+export const backupDatabase = (config: OctoberCMSConfig['database'], dumpToFile: string) => {
     if (config.default !== 'mysql' || config.connections.mysql.driver !== 'mysql') {
         throw new Error(
             `The backup script supports only mysql as database but you are using "${config.default}" in OctoberCMS.`,
@@ -22,3 +22,7 @@ export const dump = (config: OctoberCMSConfig['database'], dumpToFile: string) =
         dumpToFile,
     });
 };
+
+export const restoreDatabase = (config: OctoberCMSConfig['database'], date: string) => {
+  // TODO
+}

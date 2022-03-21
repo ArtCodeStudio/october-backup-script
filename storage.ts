@@ -1,5 +1,9 @@
 import { zip } from './zip';
 
-export const storage = (zipToFile: string) => {
+export const backupStorage = (zipToFile: string) => {
     return zip('storage', zipToFile);
 };
+
+export const restoreStorage = (date: string) => {
+  // TODO
+}
