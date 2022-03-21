@@ -11,7 +11,7 @@ const backup = async () => {
     mkdirSync(`../public/backups/${date}`, { recursive: true });
 
     console.log('\nDump database..');
-    await backupDatabase(config.database, `../public/backups/${date}/mysql.sql`);
+    await backupDatabase(config.database, `../public/backups/${date}/database.sql`);
     console.log('Dump database done.');
 
     console.log('\nZip storage..');
