@@ -1,4 +1,3 @@
-import { getOctoberCmsConfig } from './get-config';
 import { backupDatabase } from './database';
 import { backupStorage } from './storage';
 import { backupPlugins } from './plugins';
@@ -6,12 +5,11 @@ import { mkdirSync, writeFileSync } from 'fs';
 
 const backup = async () => {
     const date = new Date().toISOString();
-    const config = await getOctoberCmsConfig();
 
     mkdirSync(`../public/backups/${date}`, { recursive: true });
 
     console.log('\nDump database..');
-    await backupDatabase(config.database, `../public/backups/${date}/database.sql`);
+    await backupDatabase(`../public/backups/${date}/database.sql`);
     console.log('Dump database done.');
 
     console.log('\nZip storage..');

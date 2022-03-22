@@ -17,6 +17,12 @@ export const defaultOptions: RestoreOptions = {
   storage: true
 };
 
+const restoreParts = {
+  database: restoreDatabase,
+  storage: restoreStorage,
+  plugins: restorePlugins
+}
+
 const restore = async () => {
   const backupChoices = list();
   const { mainChoice } = await inquirer.prompt([{
@@ -35,6 +41,11 @@ const restore = async () => {
     type: 'checkbox'
   }]);
   console.log(JSON.stringify({ mainChoice, detailChoice }, null, 2));
+  for (const part of detailChoice) {
+    console.log(`restoring ${part} from ${mainChoice.name}`);
+    await restoreParts[part](mainChoice.name);
+    console.log(`${part} restored from ${mainChoice.name}`);
+  }
 };
 
 const list = () => {

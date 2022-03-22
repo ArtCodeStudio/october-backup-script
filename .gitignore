@@ -1,3 +1,6 @@
+# customize relative path to october dir
+.octoberdir
+
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 
 # We are using zero-installs here.

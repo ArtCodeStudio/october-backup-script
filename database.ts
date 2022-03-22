@@ -1,14 +1,19 @@
 import mysqldump from 'mysqldump';
-import type { OctoberCMSConfig } from './get-config';
+import { getOctoberCmsConfig, octoberDir } from './get-config';
+import { execSync } from 'child_process';
+import { resolve } from 'path';
 
-export const backupDatabase = (config: OctoberCMSConfig['database'], dumpToFile: string) => {
-    if (config.default !== 'mysql' || config.connections.mysql.driver !== 'mysql') {
+
+const config = getOctoberCmsConfig();
+
+export const backupDatabase = (dumpToFile: string) => {
+    if (config.database.default !== 'mysql' || config.database.connections.mysql.driver !== 'mysql') {
         throw new Error(
-            `The backup script supports only mysql as database but you are using "${config.default}" in OctoberCMS.`,
+            `The backup script supports only mysql as database but you are using "${config.database.default}" in OctoberCMS.`,
         );
     }
 
-    const mysqlConf = config.connections.mysql;
+    const mysqlConf = config.database.connections.mysql;
 
     return mysqldump({
         connection: {
@@ -23,6 +28,20 @@ export const backupDatabase = (config: OctoberCMSConfig['database'], dumpToFile:
     });
 };
 
-export const restoreDatabase = (config: OctoberCMSConfig['database'], date: string) => {
-  // TODO
-}
+export const restoreDatabase = (dir: string) => {
+  const { username, password, database } = config.database.connections.mysql;
+  const filePath = resolve(octoberDir, 'backups', dir, 'database.sql');
+  try {
+    execSync(`mysql -u ${username} -p${password} ${database} < ${filePath}`, { encoding: 'utf8'});
+  } catch (error: any) {
+    if (typeof error?.message === 'string') {
+      if (error.stdout) {
+        error.message += `\nstdout: ${error.stdout}`;
+      }
+      if (error.stderr) {
+        error.message += `\nstderr: ${error.stderr}`;
+      }
+    }
+    throw error;
+  }
+};

@@ -1,6 +1,6 @@
 <?php
 
-    $root = __DIR__ . "/../public";
+    $root = $argv[1];
 
     require_once $root . '/bootstrap/autoload.php';
 
