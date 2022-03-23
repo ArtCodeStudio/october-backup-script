@@ -2,6 +2,7 @@ import mysqldump from 'mysqldump';
 import { getOctoberCmsConfig, octoberDir } from './get-config';
 import { execSync } from 'child_process';
 import { resolve } from 'path';
+import { writeFileSync } from 'fs';
 
 
 const config = getOctoberCmsConfig();
@@ -44,4 +45,6 @@ export const restoreDatabase = (dir: string) => {
     }
     throw error;
   }
+  // Mark the fresh backup as the current one.
+  writeFileSync(resolve(octoberDir, 'backups', '.current.database'), dir);
 };

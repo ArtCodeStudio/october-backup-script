@@ -19,11 +19,6 @@ const backup = async () => {
     console.log('\nZip plugins..');
     await backupPlugins(`../public/backups/${date}/plugins.zip`);
     console.log('Zip plugins done.');
-
-    // mark the fresh backup as the current one
-    writeFileSync(`../public/backups/.current.database`, date);
-    writeFileSync(`../public/backups/.current.storage`, date);
-    writeFileSync(`../public/backups/.current.plugins`, date);
 };
 
 try {
