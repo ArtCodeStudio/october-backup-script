@@ -39,7 +39,7 @@ export const restorePlugins = async (dir: string) => {
 
     throw err;
   }
-  console.log('... removing old plugins');
+  console.log('... removing old plugins dir');
   execSync(`rm -rf ${pluginsPath}`);
   console.log('... moving extracted plugins to plugins dir');
   execSync(`mv ${extractPath} ${pluginsPath}`);
